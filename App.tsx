@@ -7,39 +7,14 @@
  */
 
 import React from 'react'
-import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View } from 'react-native'
+import { Button, SafeAreaView, StyleSheet, Text, useColorScheme, View } from 'react-native'
 
-import { Colors, DebugInstructions, Header, LearnMoreLinks, ReloadInstructions } from 'react-native/Libraries/NewAppScreen'
+import { Colors } from 'react-native/Libraries/NewAppScreen'
+import { Navigation } from 'react-native-navigation'
 
-const Section = ({ children, title }): JSX.Element => {
-  const isDarkMode = useColorScheme() === 'dark'
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}
-      >
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}
-      >
-        {children}
-      </Text>
-    </View>
-  )
-}
+// 注意点 1: 使用 rn 的 statusBar, iOS会报错
 
-const App: () => JSX.Element = () => {
+const App = props => {
   const isDarkMode = useColorScheme() === 'dark'
 
   const backgroundStyle = {
@@ -48,48 +23,43 @@ const App: () => JSX.Element = () => {
 
   return (
     <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView contentInsetAdjustmentBehavior="automatic" style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}
-        >
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">Read the docs to discover what to do next:</Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+      <Button
+        title="Push Settings Screen"
+        color="#710ce3"
+        onPress={() =>
+          Navigation.push(props.componentId, {
+            component: {
+              name: 'Settings',
+              // options: {
+              //   topBar: {
+              //     title: {
+              //       text: 'Settings',
+              //     },
+              //   },
+              // },
+            },
+          })
+        }
+      />
     </SafeAreaView>
   )
 }
 
-const styles = StyleSheet.create({
-  highlight: {
-    fontWeight: '700',
+App.options = {
+  topBar: {
+    title: {
+      text: 'Home',
+      color: 'white',
+    },
+    background: {
+      color: '#328124',
+    },
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  bottomTab: {
+    text: 'Home',
   },
-  sectionDescription: {
-    fontSize: 18,
-    fontWeight: '400',
-    marginTop: 8,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-})
+}
+
+const styles = StyleSheet.create({})
 
 export default App
